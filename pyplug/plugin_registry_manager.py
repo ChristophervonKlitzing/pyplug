@@ -2,15 +2,24 @@ from abc import ABC
 
 from .plugin_loader import PluginLoader
 from .object_registry import ObjectRegistry
-from .registry_view import RegistryView
+from .registry_state import RegistryState
 from .plugin import Plugin
+from .types import RegistryId
 
 
-class PluginManager(ABC):
+class PluginRegistryManager(ABC):
     def __init__(self) -> None:
         super().__init__()
+        self._next_id: RegistryId = 0
         self._registries_by_type: dict[type[ObjectRegistry], ObjectRegistry] = {}
         self._registries_by_name: dict[str, ObjectRegistry] = {}
+
+        self._registry_states: dict[RegistryId, RegistryState] = {}
+    
+    def _create_next_id(self) -> RegistryId:
+        id = self._next_id
+        self._next_id += 1
+        return id 
     
     def add_registry(self, registry: ObjectRegistry, names: set[str] | None = None, default_class_name: bool = True):
         self._registries_by_type[type(registry)] = registry
@@ -31,12 +40,17 @@ class PluginManager(ABC):
     def get_registry_types(self):
         return set(self._registries_by_type.keys())
     
-    def add_plugin_loader(self, plugin_loader: PluginLoader):
-        if not plugin_loader.is_loaded():
-            plugin_loader.load()
-        
-        plugin = plugin_loader.create_instance()
-        self.add_plugin(plugin)
+    def register_plugin(self, plugin: 'Plugin'):
+        plugin_id = self._create_next_id()
+        registry_view = RegistryState(self._registries_by_type.__getitem__, self._registries_by_name.__getitem__)
+        plugin.register(registry_view)
+        self._registry_states[plugin_id] = registry_view
+        return plugin_id
     
-    def add_plugin(self, plugin: 'Plugin'):
-        plugin.register(RegistryView(self._registries_by_type.__getitem__, self._registries_by_name.__getitem__))
+    def unregister_plugin(self, plugin_id: RegistryId):
+        registry_view = self._registry_states.pop(plugin_id)
+        registry_view.cleanup()
+    
+    def unregister_all_plugins(self):
+        for plugin_id in set(self._registry_states.keys()): # copy because elements removed during iteration
+            self.unregister_plugin(plugin_id)

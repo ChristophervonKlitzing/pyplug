@@ -1,11 +1,13 @@
 from abc import ABC, abstractmethod
+from typing import TYPE_CHECKING
 
-from pyplug.registry_view import RegistryView
+if TYPE_CHECKING:
+    from pyplug.registry_state import RegistryState
 
 
 class Plugin(ABC):
     @abstractmethod
-    def register(self, registry_view: 'RegistryView'):
+    def register(self, registry_state: 'RegistryState'):
         raise NotImplementedError
     
     

@@ -1,13 +1,14 @@
 from pyplug.plugin_loader import ModulePluginLoader
-from pyplug.plugin_manager import PluginManager
+from pyplug.plugin_registry_manager import PluginRegistryManager
 from demo_files.demo_registries import DemoRegistry
 
 
 if __name__ == "__main__":
     ploader = ModulePluginLoader("demo_files/test_plugins/plugin_a")
+    ploader.load()
     
     # This will hold the registries and allow plugins to register to them.
-    manager = PluginManager()
+    manager = PluginRegistryManager()
 
     # Add one demo registry for test purposes.
     demo_registry = DemoRegistry()
@@ -17,12 +18,16 @@ if __name__ == "__main__":
     # To see what is available:
     print(manager.get_registry_name_aliases())
     print(manager.get_registry_types())
+    print()
 
     # This will load the plugin and create an instance.
     # The instance can then register itself to any of the provided registries.
-    manager.add_plugin_loader(ploader)
+    plugin_id = manager.register_plugin(ploader.create_instance())
+    manager.unregister_plugin(plugin_id)
 
-    # The plugin could also directly be added using:
-    # ploader.load()
-    # plugin = ploader.create_instance()
-    # manager.add_plugin(plugin)
+
+    plugin_id = manager.register_plugin(ploader.create_instance())
+    manager.unregister_plugin(plugin_id)
+    
+    # Instead also all plugins could be unregistered at once:
+    # manager.unregister_all_plugins()

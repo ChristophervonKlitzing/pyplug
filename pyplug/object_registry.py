@@ -1,11 +1,13 @@
-from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING
+from typing import TypeVar, Protocol
 
-if TYPE_CHECKING:
-    from .plugin import Plugin
+from .types import ResourceId
 
 
-class ObjectRegistry(ABC):
-    @abstractmethod
-    def register_plugin(self, plugin: 'Plugin'):
-        raise NotImplementedError
+
+T = TypeVar('T', contravariant=True)
+class ObjectRegistry(Protocol[T]):
+    def register_object(self, __obj: T) -> ResourceId | None:
+        ...
+    
+    def clean_resource(self, __resource_id: ResourceId):
+        ...
