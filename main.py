@@ -4,7 +4,7 @@ from demo.demo_registries import DemoRegistry
 
 
 if __name__ == "__main__":
-    ploader = ModulePluginLoader("demo/demo_plugins/plugin_a")
+    ploader = ModulePluginLoader("demo/test_plugins/plugin_a")
     ploader.load()
     plugin = ploader.create_instance()
     
