@@ -15,7 +15,7 @@ in a typed way to the according registries.
 - The plugin-manager could hold the plugin-instances and return an id for each added plugin.
 - Plugins can be removed by id (potential for automatic cleanup)
 
-## Automatic cleanup
+### Automatic cleanup
 When a plugin gets removed, all acquired resources in the registries, could be automatically cleaned.
 A plugin might not register itself but objects it created. These objects must be linked to the plugin on registry.
 If this linkage information is available, all resources, connected to that plugin, could be automatically removed.
