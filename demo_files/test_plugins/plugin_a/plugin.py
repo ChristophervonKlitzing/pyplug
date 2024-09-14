@@ -1,5 +1,5 @@
 from pyplug.plugin import Plugin
-from demo.demo_registries import DemoRegistry
+from demo_files.demo_registries import DemoRegistry
 from pyplug.registry_view import RegistryView
 
 class MyPlugin(Plugin):

@@ -3,6 +3,7 @@ from abc import ABC
 from .plugin_loader import PluginLoader
 from .object_registry import ObjectRegistry
 from .registry_view import RegistryView
+from .plugin import Plugin
 
 
 class PluginManager(ABC):
@@ -30,9 +31,12 @@ class PluginManager(ABC):
     def get_registry_types(self):
         return set(self._registries_by_type.keys())
     
-    def add_plugin(self, plugin_loader: PluginLoader):
+    def add_plugin_loader(self, plugin_loader: PluginLoader):
         if not plugin_loader.is_loaded():
             plugin_loader.load()
         
         plugin = plugin_loader.create_instance()
+        self.add_plugin(plugin)
+    
+    def add_plugin(self, plugin: 'Plugin'):
         plugin.register(RegistryView(self._registries_by_type.__getitem__, self._registries_by_name.__getitem__))
