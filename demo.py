@@ -1,5 +1,5 @@
 from pyplug.plugin_loader import ModulePluginLoader
-from pyplug.plugin_registry_manager import PluginRegistryManager
+from pyplug.object_registry_manager import ObjectRegistryManager
 from demo_files.demo_registries import DemoRegistry
 
 
@@ -8,7 +8,7 @@ if __name__ == "__main__":
     ploader.load()
     
     # This will hold the registries and allow plugins to register to them.
-    manager = PluginRegistryManager()
+    manager = ObjectRegistryManager()
 
     # Add one demo registry for test purposes.
     demo_registry = DemoRegistry()
@@ -20,14 +20,18 @@ if __name__ == "__main__":
     print(manager.get_registry_types())
     print()
 
-    # This will load the plugin and create an instance.
     # The instance can then register itself to any of the provided registries.
-    plugin_id = manager.register_plugin(ploader.create_instance())
-    manager.unregister_plugin(plugin_id)
+    reg_id = manager.register_object(ploader.create_instance())
+    manager.unregister_object(reg_id)
 
 
-    plugin_id = manager.register_plugin(ploader.create_instance())
-    manager.unregister_plugin(plugin_id)
+    reg_id = manager.register_object(ploader.create_instance())
+    manager.unregister_object(reg_id)
+
+    # A scoped registry:
+    obj = ploader.create_instance()
+    with manager.register_scoped(obj) as reg_id:
+        print("registry-id", reg_id)
     
-    # Instead also all plugins could be unregistered at once:
-    # manager.unregister_all_plugins()
+    # Instead also all objects could be unregistered at once:
+    # manager.unregister_all_objects()

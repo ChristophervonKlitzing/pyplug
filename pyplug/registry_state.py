@@ -5,7 +5,7 @@ from .object_registry import ObjectRegistry
 from .types import ResourceId
 
 
-class RegistryState:
+class ObjectRegistryState:
     def __init__(self, class_getter: Callable[[type[ObjectRegistry]], ObjectRegistry], 
                  name_getter: Callable[[str], ObjectRegistry]) -> None:
         self._class_getter = class_getter
@@ -18,9 +18,9 @@ class RegistryState:
         return self._class_getter(registry_type)
     
     T = TypeVar('T')
-    def register_by_type(self, registry_type: type[ObjectRegistry[T]], plugin: T):
+    def register_by_type(self, registry_type: type[ObjectRegistry[T]], obj: T):
         registry = self.__get_registry_by_type(registry_type)
-        resource_id = registry.register_object(plugin)
+        resource_id = registry.register_object(obj)
 
         if resource_id is not None:
             self._aquired_resources[registry_type].add(resource_id)

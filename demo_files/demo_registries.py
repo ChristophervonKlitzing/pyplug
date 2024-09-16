@@ -1,8 +1,9 @@
+from pyplug.object_registry import ObjectRegistry
 from pyplug.plugin import Plugin
 from pyplug.types import ResourceId
 
 
-class DemoRegistry:
+class DemoRegistry(ObjectRegistry[Plugin]):
     _next_id = 0
 
     def __init__(self) -> None:

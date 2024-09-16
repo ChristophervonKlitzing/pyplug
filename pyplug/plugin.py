@@ -1,11 +1,9 @@
 from abc import ABC, abstractmethod
 
-from pyplug.registry_state import RegistryState
+from .registrable import Registrable
 
 
-class Plugin(ABC):
-    @abstractmethod
-    def register(self, registry_state: 'RegistryState'):
-        raise NotImplementedError
+class Plugin(Registrable):
+    ...
     
     
