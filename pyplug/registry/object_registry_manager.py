@@ -1,7 +1,7 @@
 from abc import ABC
 
 from .object_registry import ObjectRegistry
-from .registry_state import ObjectRegistryState
+from .object_registry_state import ObjectRegistryState
 from .registrable import Registrable
 from .types import RegistryId
 

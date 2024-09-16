@@ -1,6 +1,6 @@
-from pyplug.object_registry import ObjectRegistry
+from pyplug.registry.object_registry import ObjectRegistry
 from pyplug.plugin import Plugin
-from pyplug.types import ResourceId
+from pyplug.registry.types import ResourceId
 
 
 class DemoRegistry(ObjectRegistry[Plugin]):

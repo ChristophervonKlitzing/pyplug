@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from pyplug.registry_state import ObjectRegistryState
+from .object_registry_state import ObjectRegistryState
 
 
 class Registrable(ABC):

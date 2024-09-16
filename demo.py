@@ -1,5 +1,5 @@
 from pyplug.plugin_loader import ModulePluginLoader
-from pyplug.object_registry_manager import ObjectRegistryManager
+from pyplug.registry.object_registry_manager import ObjectRegistryManager
 from demo_files.demo_registries import DemoRegistry
 
 

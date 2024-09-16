@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from .registrable import Registrable
+from .registry.registrable import Registrable
 
 
 class Plugin(Registrable):
